@@ -6,7 +6,8 @@ const stage = new Konva.Stage({
 
 const layer = new Konva.Layer();
 
-function generateLaunchpadButton(squareWidth, cutWidth, xPos, yPos, xSpacing, ySpacing) {
+function generateLaunchpadButton(squareWidth, xPos, yPos, xSpacing, ySpacing) {
+    const cutWidth = squareWidth / 5;
     let pointsDefinition = [
         xSpacing + squareWidth * xPos, ySpacing + squareWidth * yPos,
         xSpacing + squareWidth + squareWidth * xPos, ySpacing + squareWidth * yPos,
@@ -64,17 +65,13 @@ function generateLaunchpadButton(squareWidth, cutWidth, xPos, yPos, xSpacing, yS
 };
 
 const gridConfig = {
-    buttonSize: 50,
-    buttonCutSize: 10,
-    rows: 8,
-    columns: 8,
+    buttonSize: 70,
     spacing: 10,    
 }
 
-for (let row = 1; row < gridConfig.rows + 1; ++row) {
-    for (let column = 1; column < gridConfig.columns + 1; ++column) {
+for (let row = 1; row < 8 + 1; ++row) {
+    for (let column = 1; column < 8 + 1; ++column) {
         layer.add(generateLaunchpadButton(gridConfig.buttonSize, 
-            gridConfig.buttonCutSize, 
             row, column, 
             gridConfig.spacing * row, 
             gridConfig.spacing * column));
