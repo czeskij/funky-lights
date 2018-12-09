@@ -64,6 +64,8 @@ function generateLaunchpadButton(squareWidth, cutWidth, xPos, yPos, xSpacing, yS
 };
 
 const gridConfig = {
+    buttonSize: 50,
+    buttonCutSize: 10,
     rows: 8,
     columns: 8,
     spacing: 10,    
@@ -71,7 +73,11 @@ const gridConfig = {
 
 for (let row = 1; row < gridConfig.rows + 1; ++row) {
     for (let column = 1; column < gridConfig.columns + 1; ++column) {
-        layer.add(generateLaunchpadButton(50, 10, row, column, gridConfig.spacing * row, gridConfig.spacing * column));
+        layer.add(generateLaunchpadButton(gridConfig.buttonSize, 
+            gridConfig.buttonCutSize, 
+            row, column, 
+            gridConfig.spacing * row, 
+            gridConfig.spacing * column));
     }
 }
 
