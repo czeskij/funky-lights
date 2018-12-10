@@ -5,7 +5,12 @@
   "main": "launchpad.js",
   "author": "Jakub Rajski",
   "license": "MIT",
+  "scripts": {
+    "start": "electron ."
+  },
   "dependencies": {
+    "electron": "^3.0.10",
+    "jsmidgen": "^0.1.5",
     "konva": "^2.5.1"
   }
 }

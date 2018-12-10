@@ -1,3 +1,33 @@
+const { app, BrowserWindow } = require('electron');
+const Konva = require('konva');
+const Midi = require('jsmidgen');
+
+let win;
+
+function createWindow() {
+    win = new BrowserWindow({ width: 1024, height: 768 });
+    win.loadFile('launchpad.html');
+
+    win.on('closed', () => {
+        win = null;
+    });
+}
+
+app.on('ready', createWindow);
+
+app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') {
+        app.quit();
+    }
+});
+
+app.on('activate', () => {
+    if (win === null) {
+        createWindow();
+    }
+});
+
+
 const stage = new Konva.Stage({
     container: 'launchpad',
     width: 1000,
@@ -56,12 +86,34 @@ function generateLaunchpadButton(squareWidth, xPos, yPos, xSpacing, ySpacing) {
         ];
     }
 
-    return new Konva.Line({
+    let button = new Konva.Line({
         points: pointsDefinition,
         closed: true,
-        fill: '#ccc',
+        fill: '#ddd',
         strokeWidth: 0,
     });
+
+    button.on('mouseover', function () {
+        button.fill('#bbb');
+        button.draw();
+    });
+
+    button.on('mouseout', function () {
+        button.fill('#ddd');
+        button.draw();
+    });
+
+    button.on('mousedown', function () {
+        button.fill('#aaa');
+        button.draw();
+    });
+
+    button.on('mouseup', function () {
+        button.fill('#bbb');
+        button.draw();
+    });
+
+    return button;
 };
 
 const gridConfig = {
