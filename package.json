@@ -2,15 +2,17 @@
   "name": "launchpad-lightshow-gen",
   "version": "1.0.0",
   "description": "generate Launchpad lightshow frames in MIDI",
-  "main": "launchpad.js",
+  "main": "main.js",
   "author": "Jakub Rajski",
   "license": "MIT",
   "scripts": {
     "start": "electron ."
   },
   "dependencies": {
-    "electron": "^12.0.5",
     "jsmidgen": "^0.1.5",
     "konva": "^7.2.5"
+  },
+  "devDependencies": {
+    "electron": "^12.0.5"
   }
 }
