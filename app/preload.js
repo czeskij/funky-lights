@@ -1,16 +1,17 @@
 const Konva = require('konva');
+const { KonvaDimensions } = require('./constants');
 
 window.addEventListener('DOMContentLoaded', () => {
     const stage = new Konva.Stage({
         container: '#launchpad',
-        width: 1000,
-        height: 1000,
+        ...KonvaDimensions
     });
     
     const layer = new Konva.Layer();
     
-    function generateLaunchpadButton(squareWidth, xPos, yPos, xSpacing, ySpacing) {
+    const generateLaunchpadButton = (squareWidth, xPos, yPos, xSpacing, ySpacing) => {
         const cutWidth = squareWidth / 5;
+
         let pointsDefinition = [
             xSpacing + squareWidth * xPos, ySpacing + squareWidth * yPos,
             xSpacing + squareWidth + squareWidth * xPos, ySpacing + squareWidth * yPos,
@@ -18,7 +19,7 @@ window.addEventListener('DOMContentLoaded', () => {
             xSpacing + squareWidth * xPos, ySpacing + squareWidth + squareWidth * yPos
         ];
     
-        if (xPos === 4 && yPos === 4) {
+        if (xPos === 3 && yPos === 3) {
             pointsDefinition = [
                 xSpacing + squareWidth * xPos, ySpacing + squareWidth * yPos,
                 xSpacing + squareWidth + squareWidth * xPos, ySpacing + squareWidth * yPos,
@@ -28,7 +29,7 @@ window.addEventListener('DOMContentLoaded', () => {
             ];
         }
     
-        if (xPos === 5 && yPos === 4) {
+        if (xPos === 4 && yPos === 3) {
             pointsDefinition = [
                 xSpacing + squareWidth * xPos, ySpacing + squareWidth * yPos,
                 xSpacing + squareWidth + squareWidth * xPos, ySpacing + squareWidth * yPos,
@@ -38,7 +39,7 @@ window.addEventListener('DOMContentLoaded', () => {
             ];
         }
     
-        if (xPos === 4 && yPos === 5) {
+        if (xPos === 3 && yPos === 4) {
             pointsDefinition = [
                 xSpacing + squareWidth * xPos, ySpacing + squareWidth * yPos,
                 xSpacing + squareWidth + squareWidth * xPos - cutWidth, ySpacing + squareWidth * yPos,
@@ -48,7 +49,7 @@ window.addEventListener('DOMContentLoaded', () => {
             ];
         }
     
-        if (xPos === 5 && yPos === 5) {
+        if (xPos === 4 && yPos === 4) {
             pointsDefinition = [
                 xSpacing + squareWidth * xPos + cutWidth, ySpacing + squareWidth * yPos,
                 xSpacing + squareWidth + squareWidth * xPos, ySpacing + squareWidth * yPos,
@@ -66,22 +67,22 @@ window.addEventListener('DOMContentLoaded', () => {
             strokeWidth: 0,
         });
     
-        button.on('mouseover', function () {
+        button.on('mouseover', () => {
             button.fill('#bbb');
             button.draw();
         });
     
-        button.on('mouseout', function () {
+        button.on('mouseout', () => {
             button.fill('#ddd');
             button.draw();
         });
     
-        button.on('mousedown', function () {
+        button.on('mousedown', () => {
             button.fill('#aaa');
             button.draw();
         });
     
-        button.on('mouseup', function () {
+        button.on('mouseup', () => {
             button.fill('#bbb');
             button.draw();
         });
@@ -91,15 +92,31 @@ window.addEventListener('DOMContentLoaded', () => {
     
     const gridConfig = {
         buttonSize: 70,
-        spacing: 10,    
+        spacing: 10,
+        centered: true
     }
+
+    const getLaunchpadWidth = ({ buttonSize, spacing }) => buttonSize * 8 + spacing * 7;
+    const getLaunchpadCenteringOffset = (launchpadWidth) => Math.floor((KonvaDimensions.width - launchpadWidth) / 2);
     
-    for (let row = 1; row < 8 + 1; ++row) {
-        for (let column = 1; column < 8 + 1; ++column) {
-            layer.add(generateLaunchpadButton(gridConfig.buttonSize, 
-                row, column, 
-                gridConfig.spacing * row, 
-                gridConfig.spacing * column));
+    const gridCenteringOffset = getLaunchpadCenteringOffset(getLaunchpadWidth(gridConfig));
+    
+    for (let row = 0; row < 8; ++row) {
+        for (let column = 0; column < 8; ++column) {
+
+            const launchpadButton = generateLaunchpadButton(
+                gridConfig.buttonSize, // square width
+                row, // x position
+                column, // y position
+                gridConfig.centered
+                    ? gridConfig.spacing * row + gridCenteringOffset
+                    : gridConfig.spacing * row, // x spacing
+                gridConfig.centered
+                    ? gridConfig.spacing * column + gridCenteringOffset
+                    : gridConfig.spacing * column // y spacing
+            );
+
+            layer.add(launchpadButton);
         }
     }
     
